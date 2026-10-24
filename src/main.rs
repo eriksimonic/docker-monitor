@@ -187,10 +187,12 @@ async fn connect(args: &[String]) -> Result<(Docker, &'static str), String> {
     if let Some(i) = args.iter().position(|a| a == "--host") {
         let host = args.get(i + 1).ok_or("--host needs a value")?;
         candidates.push(("custom", Docker::connect_with_host(host)));
-    } else if args.iter().any(|a| a == "--podman") {
+    } else if cfg!(unix) && args.iter().any(|a| a == "--podman") {
+        #[cfg(unix)]
         candidates.push(("podman", Docker::connect_with_podman_defaults()));
     } else {
         candidates.push(("docker", Docker::connect_with_defaults()));
+        #[cfg(unix)]
         candidates.push(("podman", Docker::connect_with_podman_defaults()));
     }
     let mut last_err = String::from("no runtime found");
