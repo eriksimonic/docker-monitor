@@ -1,0 +1,11 @@
+[package]
+name = "dmon"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+bollard = "0.21.1"
+crossterm = "0.29.0"
+futures-util = "0.3.34"
+ratatui = "0.30.2"
+tokio = { version = "1.54.1", features = ["rt-multi-thread", "macros", "sync", "time"] }
